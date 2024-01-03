@@ -1,51 +1,27 @@
-# Hybrid-ODE-NeurIPS-2021
-Code for [Integrating Expert ODEs into Neural ODEs: Pharmacology and Disease Progression (NeurIPS 2021)](https://papers.neurips.cc/paper/2021/hash/5ea1649a31336092c05438df996a3e59-Abstract.html).
+# Investigation onMixing Expert ODEs andNeural ODEs
+
+This repository is a fork of [https://github.com/vanderschaarlab/Hybrid-ODE-NeurIPS-2021](). It is the code I have worked on during a two-week project at the the van der Shaar Lab, at Cambridge.
+
+Within the limited two weeks, there isn't much time for software engineering. I did add some comments, but sorry if you find anything unclear.
+
+The repo contains three directories. 
+
+* The directory `old_model` contains the original model of the repo above, but I have changed the data generation programs so that they generate slightly different data, which is studied in my report.
+* The directory `new_model` contains the model I describe in section 4 of my writeup. It allows expert variables to depend on latent variables.
+
+These two directories can be merged easily, but I have intentionally kept them separate, to allow running the new and old models in parallel without interfering with each other (to avoid mistake of, for instance, accidently changing files that should be read-only during training).
+
+## How to run the code
+
+The README of the original repo can be found in `old_model/README.md`. When running `old_model`, firstly `cd` into the directory. You must use `bash` or any shell that supports commands like `readarray`. A shell like `sh` which just satisfy the minimum required by POSIX does not work. On macOS, you might need to avoid using the `bash` shipped with the OS and install a new one. 
+
+If you follow the instruction in the old readme, you should get the same result as the old repo.   However, if you do   `bash experiments/create_data.sh --mix_ml_into_expert `, (**NOTE** the additional flag added), then you will generate data where expert variables have weak dependence on latent variables. (The flag `--mix_ml_into_expert `will **not** work in `old_model` for shell scripts **other** **than** `create_data.sh`.)
 
 
+In the `new_model/experiments` directory, the following shell scripts **should** be runned with `--mix_ml_into_expert`:
 
-## Installation
-
-Python 3.6+ is recommended. Install dependencies as per [`requirements.txt`](./requirements.txt). 
-
-If [CUDA](https://developer.nvidia.com/cuda-zone) support is needed: 
-* make sure you have [appropriate drivers](https://www.nvidia.co.uk/Download/index.aspx) installed, 
-* make sure you have [CUDA toolkit](https://developer.nvidia.com/cuda-downloads) (a version compatible with PyTorch `1.10`, see [here](https://pytorch.org/get-started/locally/) or [here](https://pytorch.org/get-started/previous-versions/)) installed on your system or in you virtual environment.
-
-
-
-## Replicating Experiments
-
-Shell scripts to replicate the experiments can be found in [`experiments/`](./experiments/).
-
-To run all the synthetic data experiments:
-```bash
-$ bash experiments/run_all.sh
-```
-You may also run the experiment steps individually, see [`experiments/run_all.sh`](./experiments/run_all.sh). To then produce the figures, run the Jupyter notebooks `Fig3.ipynb`, `Fig6.ipynb`, `Fig7.ipynb`, `Fig9.ipynb` found under [`experiments/`](./experiments/).
-
-To run real data experiments: 
-1. Access to Dutch Data Warehouse dataset is required, see [`real_data/README.md`](./real_data/README.md) for more information.
-
-2. Preprocess the data, as documented in [`real_data/README.md`](./real_data/README.md).
-
-3. Run experiments:
-    ```bash
-    $ bash experiments/real.sh
-    ```
-
-
-
-## Citing
-
-If you use this code, please cite the associated paper:
-
-```
-@inproceedings{NEURIPS2021,
-  author = {Qian, Zhaozhi and Zame, William R and Fleuren, Lucas M and Elbers, Paul and van der Schaar, Mihaela},
-  booktitle = {Advances in Neural Information Processing Systems},
-  title = {Integrating Expert ODEs into Neural ODEs: Pharmacology and Disease Progression},
-  url = {https://papers.neurips.cc/paper/2021/file/5ea1649a31336092c05438df996a3e59-Paper.pdf},
-  volume = {34},
-  year = {2021}
-}
+```shell
+bash experiments/Fig3.sh --mix_ml_into_expert
+bash experiments/run_dim.sh --mix_ml_into_expert
+bash experiments/run_noise_level.sh --mix_ml_into_expert
 ```
