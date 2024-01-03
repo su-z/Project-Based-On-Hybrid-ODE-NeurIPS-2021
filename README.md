@@ -22,3 +22,7 @@ In the `new_model/experiments` directory, the following shell scripts **should**
 ```shell
 bash experiments/Fig3.sh --mix_ml_into_expert
 ```
+
+### Parallel ODEs
+
+The class `DoubleRocheExpertDecoder` for running two ODE in parallel to improve performance is written in `new_model/model.py`, but unfortunately we do not have enough time to run and test it. It is there for future work.
